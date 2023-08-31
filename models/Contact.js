@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const { handleValidateError, runUpdateValidators } = require("./hooks");
 
-const ContactSchema = new Schema(
+const contactSchema = new Schema(
   {
     name: {
       type: String,
@@ -18,16 +18,20 @@ const ContactSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
   },
   { versionKey: false, timestamps: true }
 );
 
-ContactSchema.post("save", handleValidateError);
+contactSchema.post("save", handleValidateError);
 
-ContactSchema.pre("findOneAndUpdate", runUpdateValidators);
+contactSchema.pre("findOneAndUpdate", runUpdateValidators);
 
-ContactSchema.post("findOneAndUpdate", handleValidateError);
+contactSchema.post("findOneAndUpdate", handleValidateError);
 
-const Contact = model("contact", ContactSchema);
+const Contact = model("contact", contactSchema);
 
 module.exports = Contact;
