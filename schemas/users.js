@@ -12,8 +12,7 @@ const userRegisterSchema = Joi.object({
   subscription: Joi.string()
     .valid(...subscriptionList)
     .messages({
-      "any.only":
-        "Subscription can only be of the following types: starter, pro and business",
+      "any.only": `Subscription can only be of the following types: ${subscriptionList} `,
     }),
 });
 
