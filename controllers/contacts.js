@@ -5,8 +5,20 @@ const { HttpError } = require("../helpers");
 const { ctrlWrapper } = require("../decorators");
 
 const getAllContacts = async (req, res) => {
-  const contacts = await Contact.find();
-  res.json(contacts);
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 10, favorite } = req.query;
+  const skip = (page - 1) * limit;
+
+  const contacts = await Contact.find({ owner }, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate("owner", "email");
+
+  const filteredContacts = favorite
+    ? contacts.filter((contact) => contact.favorite.toString() === favorite)
+    : contacts;
+
+  res.json(filteredContacts);
 };
 
 const getContactById = async (req, res) => {
@@ -21,7 +33,8 @@ const getContactById = async (req, res) => {
 };
 
 const addNewContact = async (req, res) => {
-  const addedContact = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const addedContact = await Contact.create({ ...req.body, owner });
   res.status(201).json(addedContact);
 };
 
