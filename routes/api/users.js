@@ -15,7 +15,7 @@ const loginValidate = validateBody(schemas.userLoginSchema);
 const updateSubscriptionValidate = validateBody(
   schemas.updateSubscriptionSchema
 );
-const emailValidate = validateBody(schemas.emailSchema);
+const emailValidate = validateBody(schemas.userEmailSchema);
 
 router.post("/register", registerValidate, ctrl.register);
 

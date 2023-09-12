@@ -1,24 +1,22 @@
 const nodemailer = require("nodemailer");
 
-const { META_PASSWORD } = process.env;
+const { UKR_NET_EMAIL, UKR_NET_PASSWORD } = process.env;
 
 const nodemailerConfig = {
-  host: "smtp.meta.ua",
+  host: "smtp.ukr.net",
   port: 465,
   secure: true,
   auth: {
-    user: "anna.voronina@meta.ua",
-    pass: META_PASSWORD,
+    user: UKR_NET_EMAIL,
+    pass: UKR_NET_PASSWORD,
   },
-  debug: true,
 };
 
 const transport = nodemailer.createTransport(nodemailerConfig);
 
 const sendEmail = async (data) => {
-  const email = { ...data, from: "anna.voronina@meta.ua" };
-  await transport.sendMail(email);
-  return true;
+  const email = { ...data, from: UKR_NET_EMAIL };
+  return transport.sendMail(email);
 };
 
 module.exports = sendEmail;
