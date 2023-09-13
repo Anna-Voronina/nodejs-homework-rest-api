@@ -12,7 +12,7 @@ const { HttpError, sendEmail } = require("../helpers");
 
 const { ctrlWrapper } = require("../decorators");
 
-const { SECRET_KEY, BASE_URL } = process.env;
+const { SECRET_KEY, PROJECT_URL } = process.env;
 
 const avatarsDir = path.resolve("public", "avatars");
 
@@ -37,7 +37,7 @@ const register = async (req, res) => {
   const verificationEmail = {
     to: email,
     subject: "Verify your email",
-    html: `<a target="_blank" href="${BASE_URL}/api/users/verify/${verificationToken}>Click to verify your email</a>`,
+    html: `<a target="_blank" href="${PROJECT_URL}/api/users/verify/${verificationToken}">Click to verify your email</a>`,
   };
 
   await sendEmail(verificationEmail);
@@ -60,7 +60,7 @@ const verifyEmail = async (req, res) => {
 
   await User.findByIdAndUpdate(user._id, {
     verify: true,
-    verificationToken: null,
+    verificationToken: " ",
   });
 
   res.json({
@@ -83,7 +83,7 @@ const resendVerificationEmail = async (req, res) => {
   const verificationEmail = {
     to: email,
     subject: "Verify your email",
-    html: `<a target="_blank" href="${BASE_URL}/api/users/verify/${user.verificationToken}>Click to verify your email</a>`,
+    html: `<a target="_blank" href="${PROJECT_URL}/api/users/verify/${user.verificationToken}">Click to verify your email</a>`,
   };
 
   await sendEmail(verificationEmail);
