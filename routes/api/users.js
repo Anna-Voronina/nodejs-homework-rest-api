@@ -15,8 +15,13 @@ const loginValidate = validateBody(schemas.userLoginSchema);
 const updateSubscriptionValidate = validateBody(
   schemas.updateSubscriptionSchema
 );
+const emailValidate = validateBody(schemas.userEmailSchema);
 
 router.post("/register", registerValidate, ctrl.register);
+
+router.get("/verify/:verificationToken", ctrl.verifyEmail);
+
+router.post("/verify", emailValidate, ctrl.resendVerificationEmail);
 
 router.post("/login", loginValidate, ctrl.login);
 
